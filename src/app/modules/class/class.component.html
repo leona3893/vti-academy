@@ -1,0 +1,9 @@
+<div id="container">
+  <div class="grid">
+    @for (i of classList; track i){
+    <div class="grid-item" (click)="toDetail(i.id)">
+      <p>{{ i.title }}</p>
+    </div>
+    }
+  </div>
+</div>

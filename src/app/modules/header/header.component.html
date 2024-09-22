@@ -1,0 +1,21 @@
+<div style="min-width: 100%; display:flex; justify-content: center;">
+  <div id="container">
+    <div style="width: 200px;">
+      <img src="assets/logo.jpg" id="logo" />
+    </div>
+    <p class="title">{{title}}</p>
+    <div class="right-header">
+      <article *ngIf="!isAuthScreen">
+        <p style="color: blue;cursor: pointer; font-weight: bold; text-align: right;"
+          [matMenuTriggerFor]="beforeMenu">
+          {{loggedMsv}}
+        </p>
+        <mat-menu #beforeMenu="matMenu" xPosition="before">
+          <button mat-menu-item>DS Khóa học</button>
+          <button mat-menu-item>DS Lớp học</button>
+          <button mat-menu-item (click)="logout()">Đăng xuất</button>
+        </mat-menu>
+      </article>
+    </div>
+  </div>
+</div>

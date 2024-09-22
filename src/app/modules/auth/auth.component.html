@@ -1,0 +1,26 @@
+<div id="container" class="common-background">
+  <app-header></app-header>
+  <!-- <img src="assets/logo.jpg" id="logo" /> -->
+  <div id="login">
+    <form>
+      <div>
+        <mat-form-field class="input-common">
+          <mat-label>MSV</mat-label>
+          <input matInput [formControl]="msv" />
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field class="input-common">
+          <mat-label>Mật khẩu</mat-label>
+          <input matInput [formControl]="password" />
+        </mat-form-field>
+      </div>
+      <div>
+        <span>Bạn chưa có tài khoản? </span><span><button mat-button>đăng kí ngay</button></span>
+      </div>
+      <div class="center-box footer">
+        <button (click)="onSubmit()" mat-raised-button>Đăng nhập</button>
+      </div>
+    </form>
+  </div>
+</div>
