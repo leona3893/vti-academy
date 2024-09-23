@@ -19,6 +19,7 @@ import { LoadingComponent } from './modules/loading/loading.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ClassDetailComponent } from './modules/class-detail/class-detail.component';
+import { RegAdminComponent } from './modules/reg-admin/reg.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { ClassDetailComponent } from './modules/class-detail/class-detail.compon
     ClassComponent,
     ClassListComponent,
     LoadingComponent,
-    ClassDetailComponent
+    ClassDetailComponent,
+    RegAdminComponent
   ],
   imports: [
     BrowserModule,

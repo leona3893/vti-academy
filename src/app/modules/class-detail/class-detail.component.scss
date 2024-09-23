@@ -7,7 +7,7 @@
 }
 
 .table-wrapper {
-  height: 500px;
+  height: calc(100dvh - 100px - 200px);
   overflow: auto;
   box-shadow: 1px 1px 10px #0000003d;
 }

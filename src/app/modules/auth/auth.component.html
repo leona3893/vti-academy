@@ -2,11 +2,18 @@
   <app-header></app-header>
   <!-- <img src="assets/logo.jpg" id="logo" /> -->
   <div id="login">
+    <label class="title">{{ isLogin ? 'Đăng nhập' : 'Đăng kí' }}</label>
     <form>
+      <div *ngIf="!isLogin">
+        <mat-form-field class="input-common">
+          <mat-label>Họ và tên</mat-label>
+          <input matInput [formControl]="name" />
+        </mat-form-field>
+      </div>
       <div>
         <mat-form-field class="input-common">
-          <mat-label>MSV</mat-label>
-          <input matInput [formControl]="msv" />
+          <mat-label>Username</mat-label>
+          <input matInput [formControl]="username" />
         </mat-form-field>
       </div>
       <div>
@@ -15,12 +22,24 @@
           <input matInput [formControl]="password" />
         </mat-form-field>
       </div>
-      <div>
-        <span>Bạn chưa có tài khoản? </span><span><button mat-button>đăng kí ngay</button></span>
+      <div *ngIf="!isLogin">
+        <mat-form-field class="input-common">
+          <mat-label>Nhập lại mật khẩu</mat-label>
+          <input matInput [formControl]="repassword" />
+        </mat-form-field>
+      </div>
+      <div *ngIf="isLogin">
+        <span>Bạn chưa có tài khoản? </span><span><button (click)="onRegAccount()" mat-button>đăng kí
+            ngay</button></span>
       </div>
       <div class="center-box footer">
-        <button (click)="onSubmit()" mat-raised-button>Đăng nhập</button>
+        <button *ngIf="isLogin" (click)="onSubmit()" mat-raised-button>Đăng nhập</button>
+        <button style="margin-right: 10px;" *ngIf="!isLogin" (click)="onRegAccount(true)" mat-raised-button>Quay lại
+          đăng nhập</button>
+        <button *ngIf="!isLogin" (click)="onSubmit()" mat-raised-button>Đăng kí</button>
       </div>
     </form>
   </div>
 </div>
+
+<app-loading *ngIf="isLoading"></app-loading>

@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
-import { delay } from '../const/helper';
+import { delay, randomBetweenNumber, randomBirthDay, randomMsv, randomNameStudent, randomPhoneNumber } from '../const/helper';
 import { classL } from '../const';
+import { CommonService } from './common.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
   dbName = 'vti-academy';
-  collectionNames = ['class', 'user']
+  collectionNames = ['class', 'user', 'user-admin']
   request = window.indexedDB.open(this.dbName);
   db: IDBDatabase | null = null;
-  constructor() {
+  constructor(private common: CommonService) {
     this.request.onsuccess = (event: any) => {
       const db = event.target!.result;
       this.db = db;
-      // this.initDB();
     };
 
     // This event is only implemented in recent browsers
@@ -32,42 +32,54 @@ export class ApiService {
   }
 
   async onRegisterAccount(body: any) {
+    this.common.loading = true;
     await delay(1000);
-    this.onCreate('user', body.msv, body)
+    this.onCreate('user-admin', body.username, body);
+    this.common.loading = false
   }
 
 
   async onGetAccount(key: any) {
+    this.common.loading = true;
     await delay(1000);
-    return await this.onRead('user', key)
+    const r = await this.onRead('user', key)
+    this.common.loading = false
+    return r;
   }
 
-  async getAccountByMsv(msv: string): Promise<any> {
-    const [account] = await this.onReadAll('user', (account) => account.msv === msv);
-    console.log('getAccountByMsv', account)
-    return account || null;
+  // async getAccountByMsv(msv: string): Promise<any> {
+  //   this.common.loading = true;
+  //   const [account] = await this.onReadAll('user', (account) => account.msv === msv);
+  //   console.log('getAccountByMsv', account)
+  //   this.common.loading = false
+  //   return account || null;
 
-  }
+  // }
 
   async onCreate(name: string, key: string, body: any) {
+    this.common.loading = true;
     await delay(1000);
     this.db?.transaction(name, 'readwrite').objectStore(name).add(body, key);
+    this.common.loading = false
   }
 
   async onRead(name: string, key: string): Promise<any> {
+    this.common.loading = true;
     await delay(1000);
     return new Promise(ok => {
       const request = this.db!.transaction(name).objectStore(name).get(key)
 
       request.onsuccess = (event: any) => {
+        this.common.loading = false
         ok(event.target!.result)
       }
     })
   }
 
   async onReadAll(name: string, filter?: (d: any) => boolean): Promise<any[]> {
+    this.common.loading = true;
     await delay(1000);
-    return new Promise(ok => {
+    const r = await new Promise(ok => {
       let transaction = this.db!.transaction([name]);
       let objectStore = transaction.objectStore(name);
       let request = objectStore.openCursor();
@@ -87,11 +99,14 @@ export class ApiService {
         }
       };
     })
+    this.common.loading = false;
+    return r as any;
   }
 
   async onUpdate(name: string, key: string, body: any): Promise<any> {
+    this.common.loading = true;
     await delay(1000);
-    return new Promise(ok => {
+    const r = await new Promise(ok => {
       const objectStore = this.db!.transaction(name, 'readwrite').objectStore(name)
       const request = objectStore.get(key);
 
@@ -103,8 +118,9 @@ export class ApiService {
         objectStore.put(data, key);
         ok(data);
       }
-
     })
+    this.common.loading = false;
+    return r as any;
   }
 
   private initDB() {
@@ -126,7 +142,27 @@ export class ApiService {
 
     classList.forEach(i => {
       i.forEach(v => {
-        this.onCreate('class', v.classId, v)
+        let numStudent = randomBetweenNumber(15, 30);
+        this.onCreate('class', v.classId, { ...v, stCount: numStudent });
+        while (numStudent > 0) {
+          const male = randomBetweenNumber(0, 1) === 0;
+          const name = randomNameStudent(male);
+          const msv = randomMsv();
+          const a = ['Chuyển lớp', 'Tuyển mới', 'Bảo lưu'];
+          const student = {
+            msv,
+            name,
+            type: a[randomBetweenNumber(0, 2)],
+            birthday: randomBirthDay(),
+            phone: randomPhoneNumber(),
+            joined: v.classId
+          };
+
+          this.onCreate('user', msv, student)
+          numStudent--;
+        }
+
+
       })
     }
     )

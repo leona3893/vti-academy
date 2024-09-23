@@ -1,5 +1,5 @@
 <div id="container">
-  <div style="margin: 0 auto; max-width: 95%;">
+  <div class="tb-w" style="margin: 0 auto; max-width: 95%;">
     <div id="filter" style="width: 100%; height: 50px;">
       This's a header filter
     </div>
@@ -22,7 +22,7 @@
         <ng-container matColumnDef="className">
           <th mat-header-cell *matHeaderCellDef> Tên lớp học </th>
           <td mat-cell *matCellDef="let element">
-            <p class="class-name" (click)="onNavigateTo(element.id)">{{element.className}}</p>
+            <p class="class-name" (click)="onNavigateTo(element.classId)">{{element.className}}</p>
           </td>
         </ng-container>
 
@@ -67,8 +67,5 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
     </section>
-    <div id="filter" style="width: 100%; height: 50px;">
-      This's a foooter filter
-    </div>
   </div>
 </div>

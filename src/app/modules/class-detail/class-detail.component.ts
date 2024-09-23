@@ -3,6 +3,7 @@ import { ApiService } from '../../services/api.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '../../services/common.service';
 import { classL } from '../../const';
+import { randomBetweenNumber, randomNameStudent } from '../../const/helper';
 
 @Component({
   selector: 'app-detail',
@@ -13,21 +14,19 @@ import { classL } from '../../const';
 export class ClassDetailComponent implements OnInit {
   constructor(private api: ApiService, private route: ActivatedRoute, private common: CommonService, private cdr: ChangeDetectorRef, private r: Router) { }
   dataSource: any[] = [];
-  displayedColumns = ['id', 'classId', 'className', 'startDate', 'endDate', 'stCount', 'status', 'action'];
+  displayedColumns = ['id', 'msv', 'name', 'type', 'birthday', 'phone'];
 
   ngOnInit(): void {
+    this.common.screenTitle = '';
     this.onInitApp();
   }
 
   async onInitApp() {
-    this.common.loading = true;
     const id = this.route.snapshot.params['id'];
-
-    const dataSource = await this.api.onRead('class', id);
-    console.log('dataSource', dataSource);
-    // this.dataSource = dataSource;
-    this.common.screenTitle = dataSource.className;
-    this.common.loading = false;
+    const dataSource = await this.api.onReadAll('user', (d) => d.joined === id);
+    const title = await this.api.onRead('class', id);
+    this.dataSource = dataSource;
+    this.common.screenTitle = title.className;
     this.cdr.detectChanges();
   }
 
