@@ -3,7 +3,8 @@ import { ApiService } from '../../services/api.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '../../services/common.service';
 import { classL } from '../../const';
-import { randomBetweenNumber, randomNameStudent } from '../../const/helper';
+import { delay, randomBetweenNumber, randomNameStudent } from '../../const/helper';
+import { BehaviorSubject, debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-detail',
@@ -14,11 +15,32 @@ import { randomBetweenNumber, randomNameStudent } from '../../const/helper';
 export class ClassDetailComponent implements OnInit {
   constructor(private api: ApiService, private route: ActivatedRoute, private common: CommonService, private cdr: ChangeDetectorRef, private r: Router) { }
   dataSource: any[] = [];
+  displayData: any[] = [];
   displayedColumns = ['id', 'msv', 'name', 'type', 'birthday', 'phone'];
-
+  value = '';
+  #search = new BehaviorSubject("");
   ngOnInit(): void {
     this.common.screenTitle = '';
     this.onInitApp();
+    this.#search.pipe(debounceTime(500)).subscribe((res: string) => {
+      const r = res.toLowerCase().trim();
+      console.log('search: ', res);
+      this.common.loading = true;
+      if (!r) {
+        this.displayData = this.dataSource;
+        this.cdr.markForCheck();
+
+        this.common.loading = false;
+        return;
+      }
+
+      this.displayData = this.dataSource.filter(({ msv, name }, index) => {
+        return msv.toLowerCase().includes(r) || name.toLowerCase().includes(r) || +index + 1 === +r;
+      })
+
+      this.cdr.markForCheck();
+      this.common.loading = false;
+    })
   }
 
   async onInitApp() {
@@ -26,11 +48,14 @@ export class ClassDetailComponent implements OnInit {
     const dataSource = await this.api.onReadAll('user', (d) => d.joined === id);
     const title = await this.api.onRead('class', id);
     this.dataSource = dataSource;
+    this.displayData = dataSource;
     this.common.screenTitle = title.className;
     this.cdr.detectChanges();
   }
 
-  onNavigateTo(p: string) {
-    this.r.navigateByUrl('home/class-detail/' + p)
+
+  async onSearch() {
+    await delay(100);
+    this.#search.next(this.value)
   }
 }

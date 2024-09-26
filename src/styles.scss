@@ -67,3 +67,16 @@ html {
 .mdc-data-table__content>tr:hover {
   background-color: #0095ff26;
 }
+
+.search-input {
+  height: 30px;
+  width: 350px;
+  // outline: none;
+  // border: none;
+}
+
+#filter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

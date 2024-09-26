@@ -1,10 +1,11 @@
 <div id="container">
   <div class="tb-w" style="margin: 0 auto; max-width: 95%;">
     <div id="filter" style="width: 100%; height: 50px;">
-      This's a header filter
+      <input class="search-input" placeholder="Search" type="text" (ngModelChange)="onSearch()" [(ngModel)]="value">
+      <button mat-button>Thêm học viên</button>
     </div>
     <section class="table-wrapper" tabindex="0">
-      <table mat-table [dataSource]="dataSource">
+      <table mat-table [dataSource]="displayData">
 
         <!-- Position Column -->
         <ng-container matColumnDef="id">
