@@ -20,6 +20,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ClassDetailComponent } from './modules/class-detail/class-detail.component';
 import { RegAdminComponent } from './modules/reg-admin/reg.component';
+import { CreateOrDeleteDialog } from './modules/create-or-edit/create-or-edit.component';
+import { ConfirmDeleteDialog } from './modules/confirm-delete/confirm-delete.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import { RegAdminComponent } from './modules/reg-admin/reg.component';
     ClassListComponent,
     LoadingComponent,
     ClassDetailComponent,
-    RegAdminComponent
+    RegAdminComponent,
+    CreateOrDeleteDialog,
+    ConfirmDeleteDialog
   ],
   imports: [
     BrowserModule,

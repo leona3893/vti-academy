@@ -103,6 +103,18 @@ export class ApiService {
     return r as any;
   }
 
+  async onDelete(collectionName: string, key: string) {
+    this.common.loading = true;
+    return new Promise(ok => {
+      let transaction = this.db!.transaction([collectionName], "readwrite");
+      transaction.objectStore(collectionName).delete(key);
+      transaction.oncomplete = () => {
+        this.common.loading = false;
+        ok(true);
+      };
+    })
+  }
+
   async onUpdate(name: string, key: string, body: any): Promise<any> {
     this.common.loading = true;
     await delay(1000);

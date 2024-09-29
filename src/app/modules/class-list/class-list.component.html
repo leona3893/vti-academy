@@ -2,7 +2,7 @@
   <div class="tb-w" style="margin: 0 auto; max-width: 95%;">
     <div id="filter" style="width: 100%; height: 50px;">
       <input class="search-input" placeholder="Search" type="text" (ngModelChange)="onSearch()" [(ngModel)]="value">
-      <button mat-button>Tạo thêm lớp</button>
+      <button mat-button (click)="onCreateOrUpdate()">Tạo thêm lớp</button>
     </div>
     <section class="table-wrapper" tabindex="0">
       <table mat-table [dataSource]="displayData">
@@ -55,10 +55,10 @@
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef> action </th>
           <td mat-cell *matCellDef="let element">
-            <button mat-icon-button style="margin: 0px 5px;">
+            <button mat-icon-button (click)="onCreateOrUpdate(element.classId)" style="margin: 0px 5px;">
               <mat-icon fontIcon="edit"></mat-icon>
             </button>
-            <button mat-icon-button>
+            <button (click)="onDeleteClass(element.classId)" mat-icon-button>
               <mat-icon fontIcon="delete"></mat-icon>
             </button>
           </td>

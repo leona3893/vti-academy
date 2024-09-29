@@ -5,6 +5,10 @@ import { CommonService } from '../../services/common.service';
 import { classL } from '../../const';
 import { BehaviorSubject, debounceTime, pipe } from 'rxjs';
 import { delay } from '../../const/helper';
+import { DialogRef } from '@angular/cdk/dialog';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDeleteDialog } from '../confirm-delete/confirm-delete.component';
+import { CreateOrDeleteDialog } from '../create-or-edit/create-or-edit.component';
 
 @Component({
   selector: 'app-main',
@@ -13,7 +17,10 @@ import { delay } from '../../const/helper';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClassListComponent implements OnInit {
-  constructor(private api: ApiService, private route: ActivatedRoute, private common: CommonService, private cdr: ChangeDetectorRef, private r: Router) { }
+  constructor(private api: ApiService, private route: ActivatedRoute,
+    private common: CommonService,
+    private cdr: ChangeDetectorRef,
+    private r: Router, private dialog: MatDialog) { }
   dataSource: any[] = [];
   displayData: any[] = [];
   displayedColumns = ['id', 'classId', 'className', 'startDate', 'endDate', 'stCount', 'status', 'action'];
@@ -55,6 +62,28 @@ export class ClassListComponent implements OnInit {
 
   onNavigateTo(p: string) {
     this.r.navigateByUrl('home/class-detail/' + p)
+  }
+
+  onDeleteClass(id: string) {
+    const r = this.dialog.open(ConfirmDeleteDialog);
+    r.afterClosed().subscribe(async res => {
+      if (res) {
+        await this.api.onDelete('class', id);
+        this.onInitApp();
+      }
+    })
+  }
+
+  onCreateOrUpdate(id?: string) {
+    const r = this.dialog.open(CreateOrDeleteDialog, {
+      data: {
+        isClass: true, id: id || this.route.snapshot.params['id'],
+        isCreate: !id
+      }
+    });
+    r.afterClosed().subscribe(async res => {
+      console.log('res', res)
+    })
   }
 
   async onSearch() {

@@ -57,3 +57,10 @@ export function randomPhoneNumber(): string {
   return '0' + randomBetweenNumber(200000000, 998998998)
 }
 
+export function convertDateToString(d?: Date) {
+  const dv = d ? new Date() : d;
+  const dd = dv?.getDate();
+  const mm = (dv?.getMonth() || 0) + 1;
+  const yy = dv?.getFullYear();
+  return `${dd}/${mm}/${yy}`
+}
