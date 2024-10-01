@@ -13,7 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class HeaderComponent implements OnInit {
   title = 'Danh sách khóa học';
   loggedMsv = '';
-  constructor(private common: CommonService, private cdr: ChangeDetectorRef, private route: Router, private api: ApiService, private route1: ActivatedRoute) {
+  constructor(private common: CommonService, private cdr: ChangeDetectorRef, private route: Router, private api: ApiService) {
     if (!this.isAuthScreen) {
       this.common.loading = true;
     };
@@ -43,6 +43,22 @@ export class HeaderComponent implements OnInit {
     this.loggedMsv = r?.name || 'Unknown Account';
     this.cdr.markForCheck();
     return r;
+  }
+
+  toMain() {
+    this.route.navigateByUrl('home/class');
+  }
+
+  toClass() {
+    const spl = location.href.split('/');
+    if (location.href.includes('class-list')) {
+      return;
+    }
+
+    const last = spl.pop();
+    if (last?.includes('_')) {
+      this.route.navigateByUrl('home/class-list/' + last.split('_').shift()?.toLowerCase());
+    }
   }
 
   get isAuthScreen(): boolean {
