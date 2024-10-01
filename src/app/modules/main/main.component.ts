@@ -17,7 +17,6 @@ export class MainComponent implements OnInit {
   ngOnInit(): void {
     this.common.$loading.subscribe(i => {
       this.isLoading = i;
-      console.log('isLoading', i)
       this.cdr.markForCheck();
     })
   }

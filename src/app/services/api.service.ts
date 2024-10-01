@@ -17,7 +17,6 @@ export class ApiService {
       this.db = db;
     };
 
-    // This event is only implemented in recent browsers
     this.request.onupgradeneeded = (event: any) => {
       const db = event.target!.result;
       this.collectionNames.forEach(i => {
@@ -46,15 +45,6 @@ export class ApiService {
     this.common.loading = false
     return r;
   }
-
-  // async getAccountByMsv(msv: string): Promise<any> {
-  //   this.common.loading = true;
-  //   const [account] = await this.onReadAll('user', (account) => account.msv === msv);
-  //   console.log('getAccountByMsv', account)
-  //   this.common.loading = false
-  //   return account || null;
-
-  // }
 
   async onCreate(name: string, key: string, body: any) {
     this.common.loading = true;
@@ -119,16 +109,18 @@ export class ApiService {
     this.common.loading = true;
     await delay(1000);
     const r = await new Promise(ok => {
-      const objectStore = this.db!.transaction(name, 'readwrite').objectStore(name)
+      const objectStore = this.db!.transaction([name], 'readwrite')
+        .objectStore(name);
+
       const request = objectStore.get(key);
 
-      request.onsuccess = (event: any) => {
-        const data = event.target.result
-        // Cập nhật giá trị mới
-        data.p = body
-        // Lưu vào DB
-        objectStore.put(data, key);
-        ok(data);
+      request.onsuccess = () => {
+        const res = request.result;
+        const newUpdate = Object.assign(res, body);
+        const updateRequest = objectStore.put(newUpdate, key);
+        updateRequest.onsuccess = () => {
+          ok(true);
+        }
       }
     })
     this.common.loading = false;

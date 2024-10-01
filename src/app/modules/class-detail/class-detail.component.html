@@ -2,7 +2,7 @@
   <div class="tb-w" style="margin: 0 auto; max-width: 95%;">
     <div id="filter" style="width: 100%; height: 50px;">
       <input class="search-input" placeholder="Search" type="text" (ngModelChange)="onSearch()" [(ngModel)]="value">
-      <button mat-button>Thêm học viên</button>
+      <button mat-button (click)="onCreateOrUpdate()">Thêm học viên</button>
     </div>
     <section class="table-wrapper" tabindex="0">
       <table mat-table [dataSource]="displayData">
@@ -45,12 +45,22 @@
           <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
         </ng-container>
 
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef> action </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button (click)="onCreateOrUpdate(element.msv)" style="margin: 0px 5px;">
+              <mat-icon fontIcon="edit"></mat-icon>
+            </button>
+            <button (click)="onDeleteClass(element.classId)" mat-icon-button>
+              <mat-icon fontIcon="delete"></mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
     </section>
-    <div id="filter" style="width: 100%; height: 50px;">
-      This's a foooter filter
-    </div>
   </div>
 </div>

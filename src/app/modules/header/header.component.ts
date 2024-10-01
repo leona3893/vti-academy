@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './header.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent implements OnInit, OnChanges {
+export class HeaderComponent implements OnInit {
   title = 'Danh sách khóa học';
   loggedMsv = '';
   constructor(private common: CommonService, private cdr: ChangeDetectorRef, private route: Router, private api: ApiService, private route1: ActivatedRoute) {
@@ -27,9 +27,6 @@ export class HeaderComponent implements OnInit, OnChanges {
     setTimeout(this.getCurrentAccount.bind(this), 1000)
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('ngOnChanges: ', changes)
-  }
 
   logout() {
     localStorage.removeItem('logged_msv');

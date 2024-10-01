@@ -39,11 +39,11 @@ export function randomNameStudent(isMale: boolean): string {
   return `${l} ${m} ${f}`
 }
 
-export function randomMsv() {
+export function randomMsv(w?: string) {
   const city = ['HN', 'DN', 'HCM'];
   const randomcity = city[randomBetweenNumber(0, city.length - 1)];
   const randomMsv = randomBetweenNumber(11111111, 99999999);
-  return randomcity + randomMsv;
+  return (w || randomcity) + randomMsv;
 }
 
 export function randomBirthDay(): string {
@@ -57,10 +57,11 @@ export function randomPhoneNumber(): string {
   return '0' + randomBetweenNumber(200000000, 998998998)
 }
 
-export function convertDateToString(d?: Date) {
+export function convertDateToString(d?: Date, isFormControl?: boolean) {
   const dv = d ? new Date() : d;
-  const dd = dv?.getDate();
+  const dd = +(dv?.getDate() || 0) < 10 ? '0' + dv?.getDate() : dv?.getDate();
   const mm = (dv?.getMonth() || 0) + 1;
   const yy = dv?.getFullYear();
+  if (isFormControl) return `${yy}-${mm}-${dd}`
   return `${dd}/${mm}/${yy}`
 }

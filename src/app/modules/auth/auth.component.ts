@@ -27,7 +27,6 @@ export class AuthComponent implements OnInit {
   ngOnInit(): void {
     this.common.screenTitle = 'VTI Academy Tester';
     this.common.$loading.subscribe(i => {
-      console.log('i', i)
       this.isLoading = i;
       this.cdr.markForCheck();
     })

@@ -30,7 +30,6 @@ export class ClassListComponent implements OnInit {
     this.onInitApp();
     this.#search.pipe(debounceTime(500)).subscribe((res: string) => {
       const r = res.toLowerCase().trim();
-      console.log('search: ', res);
       this.common.loading = true;
       if (!r) {
         this.displayData = this.dataSource;
@@ -69,7 +68,7 @@ export class ClassListComponent implements OnInit {
     r.afterClosed().subscribe(async res => {
       if (res) {
         await this.api.onDelete('class', id);
-        this.onInitApp();
+        await this.onInitApp();
       }
     })
   }
@@ -82,7 +81,7 @@ export class ClassListComponent implements OnInit {
       }
     });
     r.afterClosed().subscribe(async res => {
-      console.log('res', res)
+      res && await this.onInitApp();
     })
   }
 

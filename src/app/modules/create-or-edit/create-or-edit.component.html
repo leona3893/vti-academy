@@ -1,4 +1,4 @@
-<mat-dialog-content>
+<mat-dialog-content *ngIf="data.isClass" style="width: 500px;padding-bottom: 0px !important;">
   <p>{{ data.isCreate ? 'Tạo mới lớp với '+ data.id : ('Chỉnh sửa lớp ' + data.id) }}</p>
   <form>
     <div>
@@ -19,16 +19,53 @@
         <input type="date" matInput [formControl]="endDate" />
       </mat-form-field>
     </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-content *ngIf="!data.isClass" style="width: 500px;padding-bottom: 0px !important;">
+  <p>{{ data.isCreate ? 'Thêm học viên vào lớp '+ data.id : ('Chỉnh sửa học viên ' + data.id) }}</p>
+  <form>
     <div>
       <mat-form-field class="input-common">
-        <mat-label>Số học viên</mat-label>
-        <input type="number" matInput [formControl]="sCount" />
+        <mat-label>Tên học viên</mat-label>
+        <input matInput [formControl]="studentName" />
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field class="input-common">
+        <mat-label>Ngày sinh</mat-label>
+        <input type="date" matInput [formControl]="birthday" />
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field class="input-common">
+        <mat-label>Khu vực</mat-label>
+        <select [formControl]="cn" matNativeControl required>
+          <option value="HN">Hà Nội</option>
+          <option value="DN">Đà Nẵng</option>
+          <option value="HCM">HCM</option>
+        </select>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field class="input-common">
+        <mat-label>type</mat-label>
+        <select [formControl]="studentType" matNativeControl required>
+          <option value="Tuyển Mới">Tuyển Mới</option>
+          <option value="Chuyển Lớp">Chuyển Lớp</option>
+          <option value="Bảo lưu">Bảo lưu</option>
+        </select>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field class="input-common">
+        <mat-label>Sdt</mat-label>
+        <input type="number" matInput [formControl]="phoneNumber" />
       </mat-form-field>
     </div>
   </form>
 </mat-dialog-content>
 
 <mat-dialog-actions align="center">
-  <button mat-button>No</button>
-  <button mat-button cdkFocusInitial>Yes</button>
+  <button mat-button (click)="onClose(false)">No</button>
+  <button mat-button cdkFocusInitial (click)="onClose(true)">Yes</button>
 </mat-dialog-actions>

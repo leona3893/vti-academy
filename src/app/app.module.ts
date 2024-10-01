@@ -22,6 +22,7 @@ import { ClassDetailComponent } from './modules/class-detail/class-detail.compon
 import { RegAdminComponent } from './modules/reg-admin/reg.component';
 import { CreateOrDeleteDialog } from './modules/create-or-edit/create-or-edit.component';
 import { ConfirmDeleteDialog } from './modules/confirm-delete/confirm-delete.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { ConfirmDeleteDialog } from './modules/confirm-delete/confirm-delete.com
     MatMenuModule,
     MatTableModule,
     MatDialogModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]
